@@ -1,25 +1,53 @@
-import logo from './logo.svg';
-import './App.css';
+import {Component} from 'react'
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+import TableItem from './components/TableItem'
+
+import './App.css'
+
+class App extends Component {
+  state = {
+    usersList: [],
+  }
+
+  componentDidMount() {
+    this.getData()
+  }
+
+  getData = async () => {
+    const res = await fetch('https://dummyjson.com/users')
+    const data = await res.json()
+    const {users} = data
+    this.setState({
+      usersList: users,
+    })
+  }
+
+  render() {
+    const {usersList} = this.state
+    console.log(usersList)
+    return (
+      <div>
+        <h1> Dummy Data</h1>
+        <table>
+          <tr>
+            <th>Sno</th>
+            <th>Profile Pic</th>
+            <th>First Name</th>
+            <th>Last Name</th>
+            <th>Gender</th>
+            <th>E-mail</th>
+            <th>Username</th>
+            <th>Domain</th>
+            <th>IP</th>
+            <th>University</th>
+          </tr>
+          {usersList.map(user => (
+            <TableItem user={user} key={user.id} />
+          ))}
+        </table>
+      </div>
+    )
+  }
 }
 
-export default App;
+export default App
